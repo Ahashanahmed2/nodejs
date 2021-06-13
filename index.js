@@ -1,23 +1,26 @@
-const fs = require('fs');
+//dependencies
 const http = require('http');
-
-
-// const WriteStream = fs.createWriteStream(`${__dirname}/ccc.txt`);
-
-const server = http.createServer((req,res)=>{
-    const ReadStream = fs.createReadStream(`${__dirname}/bbb.txt`,'utf8');
-ReadStream.pipe(res);
-});
-
-server.listen(3000);
-
-console.log('server on');
+const {handleReqres} =require('./helpers/handleReqRes');
 
 
 
+//app object - module scaffolding
+const app = {};
 
-// ReadStream.on('data',(chunk)=>{
-// WriteStream.write(chunk);
-// })
+//configaration
+app.config ={
+    port:3000
+};
 
-// ReadStream.pipe(WriteStream);
+//create server
+app.createServer = ()=>{
+    const server = http.createServer(app.handleReqRes);
+    server.listen(app.config.port,()=>{
+        console.log(`listening to port ${app.config.port}`);
+    })
+}
+
+//handle Request Response
+app.handleReqRes= handleReqres;
+
+app.createServer()
